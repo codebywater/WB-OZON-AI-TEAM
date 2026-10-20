@@ -59,14 +59,14 @@
 В обычном терминале (macOS Terminal, iTerm, PowerShell):
 
 ```bash
-claude plugin marketplace add greg2377/WB-OZON-AI-TEAM
+claude plugin marketplace add codebywater/WB-OZON-AI-TEAM
 claude plugin install wb-ozon-ai-team@wb-ozon-ai-team
 ```
 
 Или внутри Claude Code — сначала запустите `claude`, затем введите:
 
 ```
-/plugin marketplace add greg2377/WB-OZON-AI-TEAM
+/plugin marketplace add codebywater/WB-OZON-AI-TEAM
 /plugin install wb-ozon-ai-team@wb-ozon-ai-team
 ```
 
@@ -75,7 +75,7 @@ claude plugin install wb-ozon-ai-team@wb-ozon-ai-team
 ### Codex
 
 ```bash
-git clone https://github.com/greg2377/WB-OZON-AI-TEAM
+git clone https://github.com/codebywater/WB-OZON-AI-TEAM
 cd WB-OZON-AI-TEAM && sh install.sh codex
 ```
 
@@ -84,7 +84,7 @@ cd WB-OZON-AI-TEAM && sh install.sh codex
 ### Cursor
 
 ```bash
-git clone https://github.com/greg2377/WB-OZON-AI-TEAM
+git clone https://github.com/codebywater/WB-OZON-AI-TEAM
 cd WB-OZON-AI-TEAM && sh install.sh cursor
 ```
 
@@ -93,7 +93,7 @@ cd WB-OZON-AI-TEAM && sh install.sh cursor
 ### Claude Code без плагина
 
 ```bash
-git clone https://github.com/greg2377/WB-OZON-AI-TEAM
+git clone https://github.com/codebywater/WB-OZON-AI-TEAM
 cd WB-OZON-AI-TEAM && sh install.sh claude
 ```
 
