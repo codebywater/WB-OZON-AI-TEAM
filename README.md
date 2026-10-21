@@ -1,5 +1,8 @@
 # WB-OZON-AI-TEAM
 
+[![validate](https://github.com/codebywater/WB-OZON-AI-TEAM/actions/workflows/validate.yml/badge.svg)](https://github.com/codebywater/WB-OZON-AI-TEAM/actions/workflows/validate.yml)
+![license](https://img.shields.io/badge/license-MIT-blue)
+
 **ИИ-команда для селлеров Wildberries и Ozon. Нанимается одной командой, работает в Claude Code, Codex и Cursor.**
 
 > **English summary.** An AI team of 15 skills for sellers on Wildberries and Ozon, the largest Russian marketplaces. Works in Claude Code, Codex and Cursor: calculates unit economics and real profit from marketplace reports, monitors competitor prices, writes product cards and infographic briefs, answers buyer questions and reviews, and drafts appeals against marketplace fines, following platform rules and Russian law. Docs below are in Russian.
