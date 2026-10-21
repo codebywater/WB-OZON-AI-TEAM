@@ -75,7 +75,7 @@ claude plugin install wb-ozon-ai-team@wb-ozon-ai-team
 /plugin install wb-ozon-ai-team@wb-ozon-ai-team
 ```
 
-> Команды со слешем `/plugin` работают только внутри Claude Code. В обычном терминале они дадут ошибку `no such file or directory`.
+> Команды со слешем `/plugin` работают только внутри Claude Code. В обычном терминале они дадут ошибку (например, `no such file or directory` в macOS или «не распознано как имя командлета» в PowerShell).
 
 ### Codex
 
@@ -93,7 +93,7 @@ git clone https://github.com/codebywater/WB-OZON-AI-TEAM
 cd WB-OZON-AI-TEAM && sh install.sh cursor
 ```
 
-Скиллы появятся в `~/.cursor/skills`. Перезапустите Cursor — сотрудники будут доступны в чате агента. Если вы уже поставили их для Claude Code или Codex, Cursor увидит их и без этого шага: он читает папки скиллов обоих агентов. Ставить второй раз не нужно — иначе сотрудники задвоятся.
+Скиллы появятся в `~/.cursor/skills`. Перезапустите Cursor — сотрудники будут доступны в чате агента. Если вы уже поставили их через `install.sh` для Claude Code или Codex, Cursor увидит их и без этого шага: он читает `~/.claude/skills` и `~/.agents/skills`. Плагин Claude Code ставится в другую папку — его Cursor не видит. Ставить второй раз не нужно — иначе сотрудники задвоятся.
 
 ### Claude Code без плагина
 
