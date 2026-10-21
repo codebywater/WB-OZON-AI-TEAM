@@ -1,6 +1,6 @@
 # WB-OZON-AI-TEAM
 
-[![validate](https://github.com/codebywater/WB-OZON-AI-TEAM/actions/workflows/validate.yml/badge.svg)](https://github.com/codebywater/WB-OZON-AI-TEAM/actions/workflows/validate.yml)
+[![validate](https://github.com/codebywater/WB-OZON-AI-TEAM/actions/workflows/ci.yml/badge.svg)](https://github.com/codebywater/WB-OZON-AI-TEAM/actions/workflows/ci.yml)
 ![license](https://img.shields.io/badge/license-MIT-blue)
 
 **ИИ-команда для селлеров Wildberries и Ozon. Нанимается одной командой, работает в Claude Code, Codex и Cursor.**
