@@ -104,7 +104,7 @@ def build_parser():
     p.add_argument("--tax-rate-usn6", type=float, default=6, help=argparse.SUPPRESS)
     p.add_argument("--tax-rate-usn15", type=float, default=15, help=argparse.SUPPRESS)
     p.add_argument("--vat", type=float, default=0,
-                   help="ставка НДС в цене, %% (0, 5, 7, 20...)")
+                   help="ставка НДС в цене, %% (0, 5, 7, 22...)")
     p.add_argument("--target-margin", type=float, default=None,
                    help="подобрать цену под целевую маржу, %%")
     return p

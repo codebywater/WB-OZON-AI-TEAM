@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Страница не может ничего отправить в сеть: запросы запрещены политикой безопасности. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
+<title>Юнит-экономика WB и Ozon</title>
+<meta name="description" content="Бесплатный калькулятор юнит-экономики для селлеров Wildberries и Ozon: прибыль с единицы, маржа, ROI, точка безубыточности, цена под целевую маржу. Данные не покидают браузер.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%A6%3C/text%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #f7f7f4; --surface: #fcfcfb; --surface-2: #efefeb; --line: #e3e3de; --line-strong: #cbcbc4;
+  --text: #161614; --muted: #5c5c55;
+  --accent: #2f45c8; --accent-hover: #2537a6; --on-accent: #fff; --accent-soft: #eceffd;
+  --good: #146c43; --good-soft: #e6f4ec; --bad: #b42318; --bad-soft: #fdecea;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --s6: #008300; --s7: #6250d6;
+  --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121311; --surface: #1a1a19; --surface-2: #242522; --line: #2d2e2b; --line-strong: #3d3e3a;
+    --text: #ecece8; --muted: #a3a39c;
+    --accent: #9aa8ff; --accent-hover: #b6c0ff; --on-accent: #121311; --accent-soft: #1f2440;
+    --good: #6fd3a0; --good-soft: #16271e; --bad: #ff9b91; --bad-soft: #341c1a;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300; --s7: #9085e9;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 16px/1.5 var(--font); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.num { font-variant-numeric: tabular-nums; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+.nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 20px 0; }
+.nav__brand { font-weight: 700; }
+.nav__link { font-size: 14px; color: var(--muted); }
+.hero { padding: 16px 0 28px; }
+.hero h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.08; letter-spacing: -.03em; margin: 0 0 12px; max-width: 800px; }
+.hero p { color: var(--muted); font-size: 18px; margin: 0; max-width: 680px; }
+.privacy { color: var(--good); font-size: 14px; margin: 12px 0 0; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 24px; align-items: start; }
+@media (max-width: 900px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+
+/* форма */
+fieldset { border: 0; padding: 0; margin: 0 0 20px; }
+fieldset:last-of-type { margin-bottom: 0; }
+legend { font-weight: 700; padding: 0; margin-bottom: 10px; }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 420px) { .fields { grid-template-columns: minmax(0, 1fr); } }
+.field { display: flex; flex-direction: column; gap: 4px; font-size: 14px; font-weight: 500; min-width: 0; }
+.field[hidden] { display: none; }
+.field__hint { color: var(--muted); font-weight: 400; font-size: 13px; line-height: 1.35; }
+.input { position: relative; }
+.input input, .field select { width: 100%; font: 600 16px/1.2 var(--font); font-variant-numeric: tabular-nums; color: var(--text); background: var(--bg); border: 1px solid var(--line-strong); border-radius: 8px; padding: 10px 28px 10px 10px; }
+.field select { padding-right: 10px; }
+.input span { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; pointer-events: none; }
+.input input:hover, .field select:hover { border-color: var(--muted); }
+.input input[aria-invalid="true"] { border-color: var(--bad); }
+
+.btn { font: 600 14px/1 var(--font); border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--text); cursor: pointer; }
+.btn:hover { background: var(--surface-2); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 16px; }
+.actions__note { color: var(--muted); font-size: 13px; }
+
+/* результат */
+.results { position: sticky; top: 16px; display: grid; gap: 16px; }
+@media (max-width: 900px) { .results { position: static; } }
+.errors { padding: 12px 14px; border-radius: 8px; background: var(--bad-soft); color: var(--bad); margin: 0; }
+.verdict { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 99px; font-size: 13px; font-weight: 600; }
+.verdict--good { background: var(--good-soft); color: var(--good); }
+.verdict--bad { background: var(--bad-soft); color: var(--bad); }
+.big { font-size: clamp(38px, 7vw, 54px); line-height: 1.05; letter-spacing: -.035em; font-weight: 800; margin: 8px 0 2px; }
+.sub { color: var(--muted); margin: 0; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+.stat { padding: 10px 12px; border-radius: 10px; background: var(--surface-2); min-width: 0; }
+.stat b { display: block; font-size: 20px; letter-spacing: -.01em; }
+.stat span { color: var(--muted); font-size: 13px; line-height: 1.3; display: block; }
+@media (max-width: 520px) {
+  .stats { grid-template-columns: minmax(0, 1fr); }
+  .stat { display: flex; flex-direction: row-reverse; justify-content: space-between; align-items: baseline; gap: 12px; }
+}
+h2 { font-size: 18px; margin: 0 0 12px; }
+
+/* полоса: куда уходит цена */
+.bar { display: flex; gap: 2px; height: 22px; position: relative; }
+.bar__seg { min-width: 3px; cursor: default; }
+.bar__seg:first-child { border-radius: 4px 0 0 4px; }
+.bar__seg:last-child { border-radius: 0 4px 4px 0; }
+.bar__seg:only-child { border-radius: 4px; }
+.tooltip { position: fixed; z-index: 5; pointer-events: none; background: var(--text); color: var(--bg); font-size: 13px; padding: 6px 9px; border-radius: 6px; white-space: nowrap; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; flex: none; }
+.bar-note { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table-wrap { overflow-x: auto; }
+th, td { text-align: left; padding: 7px 0; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+th { color: var(--muted); font-weight: 500; font-size: 13px; }
+td.r, th.r { text-align: right; padding-left: 12px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.name { display: flex; align-items: center; }
+tr.is-total td { font-weight: 700; }
+tr.is-hot td { background: var(--surface-2); }
+.neg { color: var(--bad); font-weight: 600; }
+
+.target { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.target .field { width: 130px; }
+.target__out { font-weight: 700; padding-bottom: 8px; }
+
+.about { margin: 40px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.about h3 { font-size: 16px; margin: 0 0 6px; }
+.about p { color: var(--muted); font-size: 15px; margin: 0; }
+footer { margin: 40px 0 0; padding: 24px 0 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+@media print { .actions, .nav__link, .about { display: none; } .results { position: static; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="nav">
+    <span class="nav__brand">📦 WB-OZON-AI-TEAM</span>
+    <a class="nav__link" href="https://github.com/codebywater/WB-OZON-AI-TEAM" rel="noopener">GitHub</a>
+  </header>
+
+  <section class="hero">
+    <h1>Сколько вы на самом деле зарабатываете с единицы товара</h1>
+    <p>Калькулятор юнит-экономики для Wildberries и Ozon: прибыль с учётом выкупа, обратной логистики, рекламы и налога, точка безубыточности и цена под нужную маржу.</p>
+    <p class="privacy">🔒 Цифры не покидают браузер: странице запрещены сетевые запросы.</p>
+  </section>
+
+  <div class="layout">
+    <form class="card" id="form" novalidate>
+      <fieldset>
+        <legend>Товар</legend>
+        <div class="fields">
+          <label class="field">Цена для покупателя<span class="input"><input id="price" inputmode="decimal" autocomplete="off"><span>₽</span></span><span class="field__hint">После всех скидок</span></label>
+          <label class="field">Себестоимость<span class="input"><input id="cost" inputmode="decimal" autocomplete="off"><span>₽</span></span><span class="field__hint">С доставкой до склада и упаковкой</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Площадка</legend>
+        <div class="fields">
+          <label class="field">Комиссия<span class="input"><input id="commission" inputmode="decimal" autocomplete="off"><span>%</span></span><span class="field__hint">Для вашей категории, из кабинета</span></label>
+          <label class="field">Эквайринг<span class="input"><input id="acquiring" inputmode="decimal" autocomplete="off"><span>%</span></span><span class="field__hint">Если удерживается отдельно</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Логистика</legend>
+        <div class="fields">
+          <label class="field">До покупателя<span class="input"><input id="logistics" inputmode="decimal" autocomplete="off"><span>₽</span></span><span class="field__hint">За единицу</span></label>
+          <label class="field">Обратная<span class="input"><input id="returnLogistics" inputmode="decimal" autocomplete="off"><span>₽</span></span><span class="field__hint">При невыкупе, за единицу</span></label>
+          <label class="field">Процент выкупа<span class="input"><input id="buyout" inputmode="decimal" autocomplete="off"><span>%</span></span><span class="field__hint">Сколько заказов выкупают</span></label>
+          <label class="field">Хранение<span class="input"><input id="storage" inputmode="decimal" autocomplete="off"><span>₽</span></span><span class="field__hint">На проданную единицу</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Реклама и прочее</legend>
+        <div class="fields">
+          <label class="field">ДРР<span class="input"><input id="adsPct" inputmode="decimal" autocomplete="off"><span>%</span></span><span class="field__hint">Реклама как доля от цены</span></label>
+          <label class="field">Реклама на единицу<span class="input"><input id="ads" inputmode="decimal" autocomplete="off"><span>₽</span></span><span class="field__hint">Если считаете в рублях</span></label>
+          <label class="field">Прочие расходы<span class="input"><input id="other" inputmode="decimal" autocomplete="off"><span>₽</span></span><span class="field__hint">Маркировка, фулфилмент</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Налоги</legend>
+        <div class="fields">
+          <label class="field">Режим
+            <select id="tax">
+              <option value="usn6">УСН «Доходы»</option>
+              <option value="usn15">УСН «Доходы минус расходы»</option>
+              <option value="none">Без налога в расчёте</option>
+            </select>
+          </label>
+          <label class="field" id="rate-field">Ставка налога<span class="input"><input id="taxRate" inputmode="decimal" autocomplete="off"><span>%</span></span><span class="field__hint">В регионах бывает ниже</span></label>
+          <label class="field">НДС в цене
+            <select id="vat">
+              <option value="0">Без НДС</option>
+              <option value="5">5%</option>
+              <option value="7">7%</option>
+              <option value="22">22%</option>
+            </select>
+            <span class="field__hint">На УСН — при доходе свыше 20 млн ₽</span>
+          </label>
+        </div>
+      </fieldset>
+      <div class="actions">
+        <button type="button" class="btn" id="copy">Скопировать ссылку с цифрами</button>
+        <button type="button" class="btn" id="reset">Вернуть пример</button>
+        <span class="actions__note" id="copy-note" role="status"></span>
+      </div>
+    </form>
+
+    <div class="results" aria-live="polite">
+      <p class="errors" id="errors" role="alert" hidden></p>
+      <section class="card" id="main">
+        <span class="verdict" id="verdict"></span>
+        <div class="big num" id="profit"></div>
+        <p class="sub">прибыль с одной выкупленной единицы</p>
+        <div class="stats">
+          <div class="stat"><b class="num" id="margin"></b><span>маржа от цены</span></div>
+          <div class="stat"><b class="num" id="roi"></b><span>ROI на себестоимость</span></div>
+          <div class="stat"><b class="num" id="breakeven"></b><span>точка безубыточности</span></div>
+        </div>
+      </section>
+
+      <section class="card" id="where">
+        <h2>Куда уходит цена</h2>
+        <div class="bar" id="bar" role="img"></div>
+        <p class="bar-note" id="bar-note" hidden></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Статья</th><th class="r">На единицу</th><th class="r">От цены</th></tr></thead>
+            <tbody id="parts"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card" id="price-for">
+        <h2>Какая цена нужна</h2>
+        <div class="target">
+          <label class="field">Целевая маржа<span class="input"><input id="target" inputmode="decimal" autocomplete="off"><span>%</span></span></label>
+          <div class="target__out num" id="target-out"></div>
+        </div>
+      </section>
+
+      <section class="card" id="what-if">
+        <h2>Что если</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Сценарий</th><th class="r">Цена</th><th class="r">Прибыль</th><th class="r">Маржа</th></tr></thead>
+            <tbody id="scenarios"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section class="about">
+    <div><h3>Почему важен процент выкупа</h3><p>На каждый выкуп приходится несколько заказов: невыкупленные едут к покупателю и обратно за ваш счёт. При выкупе 50% логистика на проданную единицу становится заметно выше тарифа.</p></div>
+    <div><h3>Откуда брать ставки</h3><p>Комиссии и логистика зависят от категории, склада и периода и часто меняются, поэтому калькулятор не подставляет их сам. Возьмите свои значения из кабинета или последнего отчёта площадки.</p></div>
+    <div><h3>Хотите считать по отчётам?</h3><p>В <a href="https://github.com/codebywater/WB-OZON-AI-TEAM" rel="noopener">WB-OZON-AI-TEAM</a> 15 ИИ-скиллов для селлеров: прибыль по отчётам площадки, цены конкурентов, карточки и ответы на отзывы. Работают в Claude Code, Codex и Cursor.</p></div>
+  </section>
+
+  <footer>Расчёт ориентировочный и не заменяет бухгалтера: налог считается на единицу, без взносов ИП и годовых лимитов. Посчитать налоги за год можно в <a href="https://codebywater.github.io/nalog-helper/" rel="noopener">nalog-helper</a>. Открытый код, MIT.</footer>
+</div>
+<div class="tooltip" id="tooltip" hidden></div>
+<script src="unit.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
